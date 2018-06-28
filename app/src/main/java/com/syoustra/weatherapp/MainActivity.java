@@ -40,13 +40,14 @@ public class MainActivity extends AppCompatActivity {
     private WeatherFragment weatherFragment;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         bundle = new Bundle();
+        weatherFragment = weatherFragment.newInstance();
+
     }
 
 
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Retrofit getDarkSkyRetrofit() {
-        if (getDarkSkyRetrofit() == null) {
+        if (darkSkyRetrofit == null) {
             darkSkyRetrofit = new Retrofit.Builder()
                     .baseUrl(darkSkyBaseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -97,20 +98,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getLocation(String address) {
+        Toast.makeText(this, address, Toast.LENGTH_SHORT).show();
         googleGeoApi.getAddress(address, googleApiKey).enqueue(new Callback<GoogleAddress>() {
             @Override
             public void onResponse(Call<GoogleAddress> call, Response<GoogleAddress> response) {
-                if (response.isSuccessful()) {
+                try {
+                    if (response.isSuccessful()) {
+//                        Toast.makeText(MainActivity.this, "Google call was made successfully", Toast.LENGTH_SHORT).show();
 
-                    bundle.putString(PLACE, response.body().getResults().get(0).getAddressName());
+                        bundle.putString(PLACE, response.body().getResults().get(0).getAddressName());
 
-                    getWeather(response.body().getResults().get(0).getGeometry().getGoogleLocation().getLatitude(),
-                            response.body().getResults().get(0).getGeometry().getGoogleLocation().getLongitude());
+                        getWeather(response.body().getResults().get(0).getGeometry().getGoogleLocation().getLatitude(),
+                                response.body().getResults().get(0).getGeometry().getGoogleLocation().getLongitude());
 
 
-
-                } else {
-                    Toast.makeText(MainActivity.this, "Google call was made, but unsuccessful", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Google call was made, but unsuccessful", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Try again, Google call threw exception", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -128,15 +134,21 @@ public class MainActivity extends AppCompatActivity {
         darkSkyApi.getWeather(darkSkyApiKey, lat, lng).enqueue(new Callback<Weather>() {
             @Override
             public void onResponse(Call<Weather> call, Response<Weather> response) {
-                if (response.isSuccessful()) {
+                try {
+                    if (response.isSuccessful()) {
+//                        Toast.makeText(MainActivity.this, "Weather call was made successfully", Toast.LENGTH_SHORT).show();
 
-                    bundle.putParcelable(WEATHER, response.body());
-                    //TODO Send bundle to fragment, create method to handle transition to fragment
-                    weatherFragment = weatherFragment.newInstance();
-                    weatherFragment.setArguments(bundle);
+                        bundle.putParcelable(WEATHER, response.body());
+                        //TODO Send bundle to fragment, create method to handle transition to fragment
+                        weatherFragment.setArguments(bundle);
+                        transitionToWeatherFragment();
 
-                } else {
-                    Toast.makeText(MainActivity.this, "Weather call made, but was unsuccessful", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(MainActivity.this, "Weather call made, but was unsuccessful", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Try again, weather call threw an exception", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -149,4 +161,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void transitionToWeatherFragment() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_holder, weatherFragment).commit();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (weatherFragment.isVisible()) {
+            getSupportFragmentManager().beginTransaction().remove(weatherFragment).commit();
+
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

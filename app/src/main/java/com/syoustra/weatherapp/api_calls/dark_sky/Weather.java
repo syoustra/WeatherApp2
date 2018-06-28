@@ -51,6 +51,21 @@ public class Weather implements Parcelable {
         parcel.writeDouble(longitude);
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public CurrentWeather getCurrentWeather() {
+        return currentWeather;
+    }
+
+    public DailyProperties getDailyProperties() {
+        return dailyProperties;
+    }
 
     public class CurrentWeather {
 
