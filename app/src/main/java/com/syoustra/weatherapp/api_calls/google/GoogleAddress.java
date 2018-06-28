@@ -15,7 +15,7 @@ public class GoogleAddress {
     }
 
 
-    class Results {
+    public class Results {
 
         @SerializedName("formatted_address")
         private String addressName;
@@ -32,8 +32,7 @@ public class GoogleAddress {
         }
 
 
-
-        class Geometry {
+        public class Geometry {
 
             @SerializedName("location")
             private GoogleLocation googleLocation;
@@ -42,11 +41,19 @@ public class GoogleAddress {
                 return googleLocation;
             }
 
-            class GoogleLocation {
+            public class GoogleLocation {
                 @SerializedName("lat")
                 private double latitude;
                 @SerializedName("lng")
                 private double longitude;
+
+                public double getLatitude() {
+                    return latitude;
+                }
+
+                public double getLongitude() {
+                    return longitude;
+                }
             }
 
         }
