@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<GoogleAddress> call, Response<GoogleAddress> response) {
                 try {
                     if (response.isSuccessful()) {
-//                        Toast.makeText(MainActivity.this, "Google call was made successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Google call was made successfully", Toast.LENGTH_SHORT).show();
 
                         bundle.putString(PLACE, response.body().getResults().get(0).getAddressName());
 
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Weather> call, Response<Weather> response) {
                 try {
                     if (response.isSuccessful()) {
-//                        Toast.makeText(MainActivity.this, "Weather call was made successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Weather call was made successfully", Toast.LENGTH_SHORT).show();
 
                         bundle.putParcelable(WEATHER, response.body());
                         //TODO Send bundle to fragment, create method to handle transition to fragment

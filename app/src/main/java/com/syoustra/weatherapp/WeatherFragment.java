@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.syoustra.weatherapp.api_calls.dark_sky.Weather;
 
@@ -50,7 +51,7 @@ public class WeatherFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         weather = getArguments().getParcelable(WEATHER);
-        place = getArguments().getParcelable(PLACE);
+        place = getArguments().getString(PLACE);
 
         return view;
     }
@@ -70,6 +71,8 @@ public class WeatherFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        Toast.makeText(getActivity(), place, Toast.LENGTH_SHORT).show();
+
         location.setText(place);
 
         currentTemp.setText(getString(R.string.temp_format, (int) Math.ceil(weather.getCurrentWeather().getTemperature())));
@@ -80,7 +83,7 @@ public class WeatherFragment extends Fragment {
 
         tempLow.setText(getString(R.string.low_temp_format, (int) Math.ceil(weather.getDailyProperties().getDailyDataList().get(0).getLowTemp())));
 
-        precipChance.setText(getString(R.string.precip_chance_format, 100 * (int) Math.ceil(weather.getDailyProperties().getDailyDataList().get(0).getPrecipProbability())));
+        precipChance.setText(getString(R.string.precip_chance_format, (int) Math.ceil(100 * weather.getDailyProperties().getDailyDataList().get(0).getPrecipProbability())));
 
         setWeatherIcon();
 

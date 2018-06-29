@@ -14,6 +14,6 @@
     <string name="precip_chance_format">%1$d%%</string>
     <string name="google_base_url">https://maps.googleapis.com/maps/api/geocode/</string>
     <string name="dark_sky_base_url">https://api.darksky.net/forecast/</string>
-    <string name="google_api_key">AIzaSyCc2psCpTZl4PVhfdY6CvhKGlx84N6Ms2g</string>
     <string name="dark_sky_api_key">a69891e750ac013263b9570f6c65e5ac</string>
+    <string name="google_api_key">AIzaSyCc2psCpTZl4PVhfdY6CvhKGlx84N6Ms2g</string>
 </resources>
